@@ -45,7 +45,6 @@ function PasswordGenerator() {
 		}
 	};
 
-	// Handle the length of the password
 	const handleLength = (value: number) => {
 		setLength(value);
 	};
