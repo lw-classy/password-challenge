@@ -37,8 +37,7 @@ function PasswordGenerator() {
 	const [show, setShow] = useState(true);
 
 	const handleCheckboxes = (checkboxKey: 'uppercase' | 'lowercase' | 'special') => {
-		const newCheckboxes = {...checkboxes};
-		newCheckboxes[checkboxKey] = !checkboxes[checkboxKey];
+		const newCheckboxes = {...checkboxes, [checkboxKey]: !checkboxes[checkboxKey]};
 
 		// We want that at least one checkbox is checked to generate a proper password
 		if (Object.values(newCheckboxes).filter(Boolean).length > 0) {
