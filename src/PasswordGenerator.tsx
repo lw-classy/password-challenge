@@ -21,20 +21,20 @@ import {
 	Tooltip,
 	useToast,
 } from '@chakra-ui/react';
-import {useMemo, useState} from 'react';
+import {useState} from 'react';
 import {CopyIcon, ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
-import {generatePassword, lowercase, specialChars, uppercase} from './utils.ts';
+import {generatePassword, selectCharset} from './utils.ts';
 
 function PasswordGenerator() {
 	const toast = useToast();
 	const [length, setLength] = useState(6);
-	const [trigger, setTrigger] = useState(false);
 	const [checkboxes, setCheckboxes] = useState({
 		uppercase: true,
 		lowercase: true,
 		special: true,
 	});
 	const [show, setShow] = useState(true);
+	const [password, setPassword] = useState(generatePassword(length, selectCharset(checkboxes)));
 
 	const handleCheckboxes = (checkboxKey: 'uppercase' | 'lowercase' | 'special') => {
 		const newCheckboxes = {...checkboxes, [checkboxKey]: !checkboxes[checkboxKey]};
@@ -49,22 +49,13 @@ function PasswordGenerator() {
 		setLength(value);
 	};
 
-	const password = useMemo(() => {
-		let charSet = '';
-		if (checkboxes.uppercase) charSet += uppercase;
-		if (checkboxes.lowercase) charSet += lowercase;
-		if (checkboxes.special) charSet += specialChars;
-		setTrigger(false);
-		return generatePassword(length, charSet);
-	}, [checkboxes, length, trigger]);
-
 	const handleCopyClick = () => {
 		navigator.clipboard
 			.writeText(password)
 			.then(() => {
 				toast({
 					title: 'Copied',
-					description: 'Password was copied to clickboard',
+					description: 'Password was copied to clipboard',
 					status: 'success',
 					duration: 9000,
 					isClosable: true,
@@ -79,7 +70,7 @@ function PasswordGenerator() {
 			<div css={style}>
 				<Card css={CardStyle}>
 					<CardHeader>
-						<Heading>Passwort Generator</Heading>
+						<Heading>Password Generator</Heading>
 					</CardHeader>
 					<CardBody>
 						<Stack>
@@ -131,7 +122,7 @@ function PasswordGenerator() {
 								</Flex>
 							</Flex>
 
-							<Button onClick={() => setTrigger(prv => !prv)}>Generate new password</Button>
+							<Button onClick={() => setPassword(generatePassword(length, selectCharset(checkboxes)))}>Generate new password</Button>
 						</Stack>
 					</CardBody>
 				</Card>

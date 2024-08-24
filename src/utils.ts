@@ -15,3 +15,11 @@ export const generatePassword: (length: number, charset?: string) => string = (l
 	}
 	return password;
 };
+
+export const selectCharset = (checkboxes: {uppercase: boolean; lowercase: boolean; special: boolean}) => {
+	let charSet = '';
+	if (checkboxes.uppercase) charSet += uppercase;
+	if (checkboxes.lowercase) charSet += lowercase;
+	if (checkboxes.special) charSet += specialChars;
+	return charSet;
+};
