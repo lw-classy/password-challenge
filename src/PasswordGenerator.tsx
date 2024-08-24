@@ -21,7 +21,7 @@ import {
 	Tooltip,
 	useToast,
 } from '@chakra-ui/react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {CopyIcon, ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {generatePassword, selectCharset} from './utils.ts';
 
@@ -48,6 +48,10 @@ function PasswordGenerator() {
 	const handleLength = (value: number) => {
 		setLength(value);
 	};
+
+	useEffect(() => {
+		setPassword(generatePassword(length, selectCharset(checkboxes)));
+	}, [checkboxes, length]);
 
 	const handleCopyClick = () => {
 		navigator.clipboard
@@ -82,7 +86,7 @@ function PasswordGenerator() {
 											aria-label={'View password'}
 											size='sm'
 											onClick={() => setShow(!show)}
-											icon={show ? <ViewIcon /> : <ViewOffIcon />}
+											icon={show ? <ViewOffIcon /> : <ViewIcon />}
 										></IconButton>
 									</Tooltip>
 									<Spacer />
